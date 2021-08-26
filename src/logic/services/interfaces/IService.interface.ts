@@ -1,4 +1,4 @@
 export interface IService<T> {
-  all(): Promise<T[]>;
-  findOne(id: string): Promise<T|undefined>;
+  all(): Promise<[T[], number]>;
+  findOne(id: number): Promise<T|undefined>;
 }

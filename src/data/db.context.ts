@@ -26,6 +26,7 @@ export class DBContext {
 
       return DBContext._connection;
     } catch (error ) {
+      console.log(error);
       console.log("ERROR", "No se pudo conectar a la base de datos.");
       process.exit(1);
     }

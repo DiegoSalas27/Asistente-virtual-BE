@@ -2,7 +2,7 @@ export function resultResponse<T>(
   count: number,
   message: String,
   success: boolean,
-  result: T
+  result: T[]
 ) {
   const response = {
     count,

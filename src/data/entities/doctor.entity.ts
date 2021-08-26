@@ -10,6 +10,12 @@ export class Doctor {
   especialidad: Especialidad;
 
   @Column({
+    type: "int",
+    nullable: false
+  })
+  especialidadId: number;
+
+  @Column({
     length: 64
   })
   nombres: string;

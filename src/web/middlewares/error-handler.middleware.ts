@@ -18,20 +18,21 @@ export function errorHandler(
   } else if (err instanceof Array && err[0] instanceof ValidationError) {
     code = 400;
     let message: unknown[] = [];
+    let erroObj: any;
     err.forEach(validationError => {
       const field = validationError.property;
-      const erroObj: any = { field, message: [] }
+      erroObj = { field, message: [] }
       for (const validationMessage of Object.values(validationError.constraints)) {
         erroObj.message.push(validationMessage)
-        message.push(erroObj);
       }
+      message.push(erroObj);
     });
-    response = singleResponse(message, false);
+    response = singleResponse(ValidationConstants.VALIDATION_DTO, false, message);
   } else if (err.message.includes("Duplicate")) {
     err.message = ValidationConstants.MESSAGE_RESPONSE_DUPLICATE;
     response = singleResponse(err.message , false);
   } else {
     response = singleResponse(err.message, false);
   }
-  res.status(code).send(response);
+  return res.status(code).send(response);
 }

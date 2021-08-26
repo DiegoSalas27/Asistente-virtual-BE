@@ -16,4 +16,7 @@ export class ValidationConstants {
 
   public static readonly VALIDATION_MESSAGE_FIXED_LENGTH: string = "$property: Debe tener $constraint1 caracteres.";
   public static readonly VALIDATION_MESSAGE_IS_NOT_EMPTY: string = "$property no puede estar vacío";
+
+  public static readonly VALIDATION_DTO: string = "Ha ocurrido un error en el envío de datos";
+  public static readonly MESSAGE_NOT_CHANGED: string = "No se ha actualizado la entidad requerida";
 }

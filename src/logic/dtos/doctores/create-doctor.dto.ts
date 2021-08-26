@@ -1,8 +1,6 @@
-import { IsString } from "class-validator";
-import { IsNotEmpty } from "class-validator";
-import { IsInt, IsNumber, IsOptional } from "class-validator";
 import { ValidationConstants } from '@core/constants/validation';
-import { Doctor } from '../../data/entities/doctor.entity';
+import { IsInt, IsNotEmpty, IsString } from "class-validator";
+import { Doctor } from '../../../data/entities/doctor.entity';
 
 export class CreateDoctorDto {
   //data to receive

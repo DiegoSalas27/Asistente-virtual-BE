@@ -10,10 +10,7 @@
       "name": "Launch Program",
       "outputCapture": "std",
       "args": ["${workspaceFolder}/src/bootstrap.ts"],
-      "runtimeArgs": ["--nolazy", "-r", "ts-node/register", "-r", "tsconfig-paths/register"],
-      "sourceMaps": true,
       "cwd": "${workspaceRoot}",
-      "protocol": "inspector"
     }
   ]
 }
