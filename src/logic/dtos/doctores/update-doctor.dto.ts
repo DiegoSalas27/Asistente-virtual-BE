@@ -1,7 +1,6 @@
 import { ValidationConstants } from '@core/constants/validation';
-import { IsOptional } from 'class-validator';
-import { IsNotEmpty, IsString, IsInt } from 'class-validator';
 import { Doctor } from '@data/entities';
+import { IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class UpdateDoctorDto {
   //data to receive
@@ -13,6 +12,9 @@ export class UpdateDoctorDto {
   })
   readonly id: number;
 
+  @IsInt({
+    message: ValidationConstants.VALIDATION_MESSAGE_IS_INT
+  })
   @IsNotEmpty({
     message: ValidationConstants.VALIDATION_MESSAGE_IS_NOT_EMPTY
   })

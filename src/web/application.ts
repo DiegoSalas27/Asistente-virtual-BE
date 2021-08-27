@@ -1,6 +1,5 @@
 import { DBContext } from "@data/db.context";
-import { DoctoresService } from "@logic/services/impl/doctores.service";
-import { EspecialidadesService } from "@logic/services/impl/especialidades.service";
+import { DoctoresService, EspecialidadesService, HorariosService, FechasAtencionService } from '@logic/services/impl';
 import "@web/controllers";
 import { Application } from "@web/lib/abstract-application";
 import express from "express";
@@ -14,6 +13,8 @@ export class App extends Application {
     container.bind(DBContext).toSelf();
     container.bind(DoctoresService).toSelf();
     container.bind(EspecialidadesService).toSelf();
+    container.bind(HorariosService).toSelf();
+    container.bind(FechasAtencionService).toSelf();
   }
   setup(): void | Promise<void> {
     const dbContext = this._container.get(DBContext);

@@ -8,14 +8,6 @@ export class GetEspecialidadDto {
     private readonly doctores: Doctor[],
   ) {}
 
-  @IsInt({
-    message: ValidationConstants.VALIDATION_MESSAGE_IS_INT
-  })
-  @IsNotEmpty({
-    message: ValidationConstants.VALIDATION_MESSAGE_IS_NOT_EMPTY
-  })
-  readonly id: number;
-
   static from(entity: Especialidad) {
     return {...entity}
   }

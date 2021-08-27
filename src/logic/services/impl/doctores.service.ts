@@ -1,13 +1,10 @@
-import { DoctoresRepository } from "@data/repositories/doctores.repository";
-import { injectable } from "inversify";
-import { getCustomRepository } from "typeorm";
-import { Doctor } from "@data/entities/doctor.entity";
-import { IService } from "../interfaces/IService.interface";
 import { DBContext } from "@data/db.context";
+import { Doctor } from "@data/entities/doctor.entity";
+import { DoctoresRepository } from "@data/repositories/doctores.repository";
 import { CreateDoctorDto, GetDoctorDto, UpdateDoctorDto } from "@logic/dtos";
-import { BusinessError, StringUtils } from '@core/common';
-import { ValidationConstants } from '@core/constants/validation';
-import { DeleteResult } from "typeorm";
+import { injectable } from "inversify";
+import { DeleteResult, getCustomRepository } from "typeorm";
+import { IService } from "../interfaces/IService.interface";
 
 @injectable()
 export class DoctoresService implements IService<Doctor> {
@@ -16,7 +13,11 @@ export class DoctoresService implements IService<Doctor> {
   async all(): Promise<[Doctor[], number]> {
     try {
       const doctoresRepository = getCustomRepository(DoctoresRepository);
-      const doctores = await doctoresRepository.findAndCount();
+      const doctores = await doctoresRepository.createQueryBuilder("d")
+        .innerJoinAndSelect("d.especialidad", "e")
+        .leftJoinAndSelect("d.horarios", "h")
+        .leftJoinAndSelect("d.citasMedicas", "c")
+        .getManyAndCount();
 
       if (doctores[1]) {
         return GetDoctorDto.fromMany(doctores[0], doctores[1]);
@@ -30,7 +31,9 @@ export class DoctoresService implements IService<Doctor> {
   async findOne(id: number): Promise<Doctor | undefined> {
     try {
       const doctoresRepository = getCustomRepository(DoctoresRepository);
-      const doctor = await doctoresRepository.findOne(id);
+      const doctor = await doctoresRepository.findOne({id}, {
+        relations: ['especialidad', 'horarios', 'citasMedicas']
+      });
 
       if (doctor) {
         return GetDoctorDto.from(doctor);

@@ -10,7 +10,7 @@ export class ErrorHandlerMiddleware extends BaseMiddleware {
     super();
   }
 
-  public execute(
+  public executeWithError(
     err: any,
     _: Request,
     res: Response,
@@ -45,6 +45,6 @@ export class ErrorHandlerMiddleware extends BaseMiddleware {
   }
 
   static handleError() {
-    return new ErrorHandlerMiddleware().execute
+    return new ErrorHandlerMiddleware().executeWithError
   }
 }

@@ -4,26 +4,23 @@ import { Especialidad } from './especialidad.entity';
 import { Horario } from './horario.entity';
 
 @Entity({
-  name: 'doctores'
+  name: 'pacientes'
 })
-export class Doctor {
+export class Paciente {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({
-    type: "int",
-    name: "especialidad_id",
-    default: null
+    name: 'codigo_conadis',
+    length: 64
   })
-  especialidadId: number;
+  codigoConadis: string;
 
-  @ManyToOne(() => Especialidad, especialidad => especialidad.doctores)
-  @JoinColumn({
-    name: "especialidad_id",
-    referencedColumnName: "id"
+  @Column({
+    length: 64
   })
-  especialidad: Especialidad;
-
+  password: string;
+  
   @Column({
     length: 64
   })
@@ -34,8 +31,21 @@ export class Doctor {
   })
   apellidos: string;
 
-  @OneToMany(() => Horario, horario => horario.doctor)
-  horarios: Horario[];
+  @Column({
+    length: 64
+  })
+  telefono: string;
+
+  @Column({
+    length: 64
+  })
+  direccion: string;
+
+  @Column({
+    name: 'fecha_nacimiento',
+    type: 'date'
+  })
+  fechaNacimiento: string;
 
   @OneToMany(() => CitaMedica, citaMedica => citaMedica.doctor)
   citasMedicas: CitaMedica[];

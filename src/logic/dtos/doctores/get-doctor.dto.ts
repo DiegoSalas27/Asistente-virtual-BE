@@ -10,14 +10,6 @@ export class GetDoctorDto {
     private readonly apellidos: string,
   ) {}
 
-  @IsInt({
-    message: ValidationConstants.VALIDATION_MESSAGE_IS_INT
-  })
-  @IsNotEmpty({
-    message: ValidationConstants.VALIDATION_MESSAGE_IS_NOT_EMPTY
-  })
-  readonly id: number;
-
   static from(entity: Doctor) {
     return {...entity}
   }
