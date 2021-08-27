@@ -12,8 +12,9 @@ export class ValidateRequestMiddleware extends BaseMiddleware {
   }
 
   public async execute(
+    _: any,
     req: Request,
-    _: Response,
+    _2: Response,
     next: NextFunction
   ): Promise<void> {
     if (this._withParams) {

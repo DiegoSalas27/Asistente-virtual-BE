@@ -7,9 +7,7 @@ import express from "express";
 import { Container } from "inversify";
 import { InversifyExpressServer } from "inversify-express-utils";
 import morgan from "morgan";
-import { errorHandler } from './middlewares';
-
-
+import { ErrorHandlerMiddleware } from './middlewares';
 
 export class App extends Application {
   configureServices(container: Container): void {
@@ -25,7 +23,7 @@ export class App extends Application {
     const server = new InversifyExpressServer(this._container);
 
     server.setErrorConfig((app) => {
-      app.use(errorHandler)
+      app.use(ErrorHandlerMiddleware.handleError())
     })
 
     server.setConfig((app) => {

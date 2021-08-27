@@ -5,8 +5,9 @@ export abstract class BaseMiddleware {
   }
 
   public abstract execute(
+    err: any,
     req: Request,
     res: Response,
     next: NextFunction
-  ): void | Promise<void>
+  ): void | Promise<void> | Response<any, Record<string, any>>
 }
