@@ -1,14 +1,14 @@
-import { singleResponse, StringUtils } from "@core/common";
+import {
+  singleResponse,
+  StringUtils,
+  BusinessError,
+  resultResponse,
+} from "@core/common";
 import { ValidationConstants } from "@core/constants/validation";
-import { CreateCitaMedicaDto } from '@logic/dtos';
+import { CreateCitaMedicaDto } from "@logic/dtos";
 import { CitasMedicasService } from "@logic/services/impl";
 import { NextFunction, Request, Response } from "express";
-import {
-  controller, httpGet,
-  httpPost
-} from "inversify-express-utils";
-import { BusinessError } from "../../core/common/business-error";
-import { resultResponse } from '../../core/common/responses';
+import { controller, httpGet, httpPost } from "inversify-express-utils";
 import { ValidateRequestMiddleware } from "../middlewares";
 
 @controller("/citas-medicas")
@@ -17,19 +17,24 @@ export class CitasMedicasController {
 
   constructor(private readonly _service: CitasMedicasService) {}
 
-  @httpGet("/:doctorId?/:pacienteId?")
+  @httpGet("/")
   async index(req: Request, res: Response, next: NextFunction) {
     try {
-      const doctorId = +req.params.doctorId;
-      const pacienteId = +req.params.pacienteId;
+      let doctorId = undefined;
+      let pacienteId = undefined;
+      req.query.doctorId && (doctorId = +req.query.doctorId);
+      req.query.pacienteId && (pacienteId = +req.query.pacienteId);
 
       const [result, count] = await this._service.all(doctorId, pacienteId);
-      
-      const message = StringUtils.format(ValidationConstants.MESSAGE_RESPONSE_GET_SUCCESS, this.entityName);
+
+      const message = StringUtils.format(
+        ValidationConstants.MESSAGE_RESPONSE_GET_SUCCESS,
+        this.entityName
+      );
       const response = resultResponse(count, message, true, result);
 
       res.status(200).send(response);
-    } catch(error) {
+    } catch (error) {
       next(error);
     }
   }
@@ -51,7 +56,10 @@ export class CitasMedicasController {
         );
       }
 
-      const message = StringUtils.format(ValidationConstants.MESSAGE_RESPONSE_GET_SUCCESS, this.entityName);
+      const message = StringUtils.format(
+        ValidationConstants.MESSAGE_RESPONSE_GET_SUCCESS,
+        this.entityName
+      );
       const response = singleResponse(message, true, result);
 
       res.status(200).send(response);
