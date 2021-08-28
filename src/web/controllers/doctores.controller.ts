@@ -23,7 +23,9 @@ export class DoctoresController {
   @httpGet("/")
   async index(req: Request, res: Response, next: NextFunction) {
     try {
-      const [result, count] = await this._service.all();
+      let especialidadId = undefined;
+      req.query.especialidadId && (especialidadId = +req.query.especialidadId);
+      const [result, count] = await this._service.all(especialidadId);
       
       const message = StringUtils.format(ValidationConstants.MESSAGE_RESPONSE_GET_SUCCESS, this.entityName);
       const response = resultResponse(count, message, true, result);

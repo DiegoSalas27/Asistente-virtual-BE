@@ -11,14 +11,18 @@ import { transformHHMM } from '@core/common';
 export class DoctoresService implements IService<Doctor> {
   constructor(private readonly _database: DBContext) {}
 
-  async all(): Promise<[Doctor[], number]> {
+  async all(especialidadId?: number): Promise<[Doctor[], number]> {
     try {
       const doctoresRepository = getCustomRepository(DoctoresRepository);
-      const doctores = await doctoresRepository.createQueryBuilder("d")
+      const qb = await doctoresRepository.createQueryBuilder("d")
         .innerJoinAndSelect("d.especialidad", "e")
         .leftJoinAndSelect("d.horarios", "h")
-        .leftJoinAndSelect("d.citasMedicas", "c")
-        .getManyAndCount();
+        .leftJoinAndSelect("d.citasMedicas", "c");
+
+      if (especialidadId) 
+        qb.where(`d.especialidad_id = ${especialidadId}`);
+
+      const doctores = await qb.getManyAndCount();
 
       doctores[0].forEach(doctor => {
         transformHHMM([doctor.horarios, doctor.horarios.length]);

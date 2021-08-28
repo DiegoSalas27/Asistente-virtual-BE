@@ -1,6 +1,4 @@
-import { ManyToOne, PrimaryGeneratedColumn, Entity, Column, JoinColumn, OneToMany } from 'typeorm';
-import { Especialidad } from './especialidad.entity';
-import { Horario } from './horario.entity';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Doctor } from './doctor.entity';
 import { Paciente } from './paciente.entity';
 
