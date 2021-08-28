@@ -1,10 +1,11 @@
 import { DBContext } from "@data/db.context";
 import { Doctor } from "@data/entities/doctor.entity";
 import { DoctoresRepository } from "@data/repositories/doctores.repository";
-import { CreateDoctorDto, GetDoctorDto, UpdateDoctorDto } from "@logic/dtos";
+import { CreateDoctorDto, GetDoctorDto, UpdateDoctorDto, GetHorariosDto } from "@logic/dtos";
 import { injectable } from "inversify";
 import { DeleteResult, getCustomRepository } from "typeorm";
 import { IService } from "../interfaces/IService.interface";
+import { transformHHMM } from '@core/common';
 
 @injectable()
 export class DoctoresService implements IService<Doctor> {
@@ -18,6 +19,11 @@ export class DoctoresService implements IService<Doctor> {
         .leftJoinAndSelect("d.horarios", "h")
         .leftJoinAndSelect("d.citasMedicas", "c")
         .getManyAndCount();
+
+      doctores[0].forEach(doctor => {
+        transformHHMM([doctor.horarios, doctor.horarios.length]);
+        doctor.horarios = GetHorariosDto.fromMany(doctor.horarios, doctor.horarios.length) as any;
+      })
 
       if (doctores[1]) {
         return GetDoctorDto.fromMany(doctores[0], doctores[1]);
@@ -35,7 +41,11 @@ export class DoctoresService implements IService<Doctor> {
         relations: ['especialidad', 'horarios', 'citasMedicas']
       });
 
+
       if (doctor) {
+        transformHHMM([doctor.horarios, doctor.horarios.length]);
+        doctor.horarios = GetHorariosDto.fromMany(doctor.horarios, doctor.horarios.length) as any;
+  
         return GetDoctorDto.from(doctor);
       } 
       return undefined;

@@ -42,10 +42,21 @@ export class CitaMedica {
   @Column({
     length: 64
   })
-  nombres: string;
+  especialidad: string;
 
   @Column({
-    length: 64
+    name: 'fecha',
+    type: 'date'
   })
-  apellidos: string;
+  fecha_atencion: string;
+
+  @Column({
+    type: 'int'
+  })
+  hora_inicio: number;
+
+  @Column({
+    type: 'int'
+  })
+  hora_fin: number;
 }

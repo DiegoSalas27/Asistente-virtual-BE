@@ -15,46 +15,6 @@ export class FechasAtencionController {
 
   constructor(private readonly _service: FechasAtencionService) {}
 
-  @httpGet("/")
-  async index(req: Request, res: Response, next: NextFunction) {
-    try {
-      const [result, count] = await this._service.all();
-      
-      const message = StringUtils.format(ValidationConstants.MESSAGE_RESPONSE_GET_SUCCESS, this.entityName);
-      const response = resultResponse(count, message, true, result);
-
-      res.status(200).send(response);
-    } catch(error) {
-      next(error);
-    }
-  }
-
-  @httpGet("/:id")
-  async show(req: Request, res: Response, next: NextFunction) {
-    try {
-      const id = +req.params.id;
-      const doctor = await this._service.findOne(id);
-
-      if (!doctor) {
-        throw new BusinessError(
-          StringUtils.format(
-            ValidationConstants.MESSAGE_RESPONSE_NOT_FOUND,
-            this.entityName,
-            id.toString()
-          ),
-          404
-        );
-      }
-
-      const message = StringUtils.format(ValidationConstants.MESSAGE_RESPONSE_GET_SUCCESS, this.entityName);
-      const response = singleResponse(message, true, doctor);
-
-      res.status(200).send(response);
-    } catch (error) {
-      next(error);
-    }
-  }
-
   @httpPost("/", ValidateRequestMiddleware.with(CreateFechaAtencionDto))
   async store(req: Request, res: Response, next: NextFunction) {
     try {

@@ -1,12 +1,19 @@
 import { DBContext } from "@data/db.context";
-import { DoctoresService, EspecialidadesService, HorariosService, FechasAtencionService } from '@logic/services/impl';
+import {
+  CitasMedicasService,
+  DoctoresService,
+  EspecialidadesService,
+  FechasAtencionService,
+  HorariosService,
+  PacientesService,
+} from "@logic/services/impl";
 import "@web/controllers";
 import { Application } from "@web/lib/abstract-application";
 import express from "express";
 import { Container } from "inversify";
 import { InversifyExpressServer } from "inversify-express-utils";
 import morgan from "morgan";
-import { ErrorHandlerMiddleware } from './middlewares';
+import { ErrorHandlerMiddleware } from "./middlewares";
 
 export class App extends Application {
   configureServices(container: Container): void {
@@ -15,6 +22,8 @@ export class App extends Application {
     container.bind(EspecialidadesService).toSelf();
     container.bind(HorariosService).toSelf();
     container.bind(FechasAtencionService).toSelf();
+    container.bind(PacientesService).toSelf();
+    container.bind(CitasMedicasService).toSelf();
   }
   setup(): void | Promise<void> {
     const dbContext = this._container.get(DBContext);
@@ -24,8 +33,8 @@ export class App extends Application {
     const server = new InversifyExpressServer(this._container);
 
     server.setErrorConfig((app) => {
-      app.use(ErrorHandlerMiddleware.handleError())
-    })
+      app.use(ErrorHandlerMiddleware.handleError());
+    });
 
     server.setConfig((app) => {
       app.use(express.json());
